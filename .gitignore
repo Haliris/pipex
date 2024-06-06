@@ -1,0 +1,7 @@
+.vscode/*
+*.vscode
+*.swp
+*.gch
+*.out
+test*
+test/*
