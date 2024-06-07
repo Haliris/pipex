@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_execpaths.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/07 16:26:44 by jteissie         ###   ########.fr       */
+/*   Created: 2024/06/07 16:44:37 by jteissie          #+#    #+#             */
+/*   Updated: 2024/06/07 16:51:43 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <unistd.h>
 #include "libft.h"
-
-// /usr/bin/argv[1] issue with arguments
+#include "pipex.h"
 
 char	*clean_path(char *str)
 {
@@ -61,28 +58,4 @@ char	**get_execpaths(char **envp)
 	if (!exec_paths)
 		return (NULL);
 	return (exec_paths);
-}
-
-int	main(int ac, char *av[], char *envp[])
-{
-	char	**exec_paths;
-	int		i;
-
-	i = 0;
-	exec_paths = get_execpaths(envp);	
-	if (!exec_paths)
-		return (1);
-	while(exec_paths[i])	
-	{
-		ft_printf("%s\n", exec_paths[i]);
-		i++;
-	}
-	i = 0;
-	while (exec_paths[i])
-	{
-		free(exec_paths[i]);
-		i++;
-	}
-	free(exec_paths);
-	return (0);
 }
