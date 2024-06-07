@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:44:37 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/07 20:33:01 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/07 22:39:07 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -39,6 +39,7 @@ char	*get_path(char *av, char **env)
 	char	*control;
 	int		i;
 
+	i = 0;
 	while (env[i])
 	{
 		control = ft_strjoin(env[i], av);
