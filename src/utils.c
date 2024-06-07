@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 16:53:36 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/07 18:55:07 by jteissie         ###   ########.fr       */
+/*   Created: 2024/06/07 18:14:25 by jteissie          #+#    #+#             */
+/*   Updated: 2024/06/07 18:59:44 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef PIPEX_H
-# define PIPEX_H
-# include <errno.h>
 
-char	**get_execpaths(char **envp);
-void	cat_slash(char **envp);
-void	trash(char **array);
-#endif
+#include "libft.h"
+#include "pipex.h"
+
+void	trash(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (!array)
+		return ;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
