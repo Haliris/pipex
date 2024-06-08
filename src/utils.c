@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 18:14:25 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/07 19:41:42 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:45:22 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ char	*ft_str_rejoin(char *stash, char *add)
 		return (NULL);
 	joined = ft_calloc((ft_strlen(stash) + ft_strlen(add) + 1), sizeof(char));
 	if (!joined)
-		return (NULL);
+		return (free(stash), NULL);
 	copy_and_cat(joined, stash, add);
 	return (free(stash), joined);
 }
 
 void	copy_and_cat(char *out, char *cpy_src, char *cat_src)
 {
-	int	i;
-	int	src_i;
+	size_t	i;
+	int		src_i;
 
 	src_i = 0;
 	ft_strlcpy(out, cpy_src, ft_strlen(cpy_src) + 1);

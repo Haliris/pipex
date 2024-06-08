@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/08 19:55:45 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:28:56 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	try_direct_path(char **command, char **env)
 		if (execve(exec_path, command, env) == -1)
 		{
 			trash(command);
-			perror("Child process error: ");
-			exit (-1);
+			perror("Child process error");
+			exit (errno);
 		}
 	}
 }
@@ -37,23 +37,23 @@ void	execute(char *av, char **env)
 	command = ft_split(av, ' ');
 	if (!command || !command[0])
 	{
-		perror("Child process error: ");
-		exit (1);
+		perror("Child process error");
+		exit (errno);
 	}
 	try_direct_path(command, env);
 	exec_path = get_execpath(env, command[0]);
 	if (!exec_path)
 	{
 		trash(command);
-		perror("Child process error: ");
-		exit (1);
+		perror("Child process error");
+		exit (errno);
 	}
 	if (execve(exec_path, command, env) == -1)
 	{
 		free(exec_path);
 		trash(command);
-		perror("Child process error: ");
-		exit (-1);
+		perror("Child process error");
+		exit (errno);
 	}
 }
 
@@ -111,7 +111,7 @@ int	main(int ac, char *av[], char *envp[])
 	if (pid_status)
 	{
 		ft_printf("Child exited with code:%d\n", pid_status);
-		exit(1);
+		exit(pid_status);
 	}
 	second_process(av, envp, fd);
 	return (0);

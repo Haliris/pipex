@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:53:36 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/07 22:28:34 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:16:17 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -14,6 +14,8 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <stdio.h>
+# include <errno.h>
 
 char	*get_execpath(char **envp, char *av);
 void	cat_slash(char **envp);
