@@ -6,12 +6,28 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/08 18:38:27 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:55:45 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
+
+void	try_direct_path(char **command, char **env)
+{
+	char	*exec_path;
+
+	if (access(command[0], F_OK | X_OK) == 0)
+	{
+		exec_path = command[0];
+		if (execve(exec_path, command, env) == -1)
+		{
+			trash(command);
+			perror("Child process error: ");
+			exit (-1);
+		}
+	}
+}
 
 void	execute(char *av, char **env)
 {
@@ -19,11 +35,12 @@ void	execute(char *av, char **env)
 	char	*exec_path;
 
 	command = ft_split(av, ' ');
-	if (!command)
+	if (!command || !command[0])
 	{
 		perror("Child process error: ");
 		exit (1);
 	}
+	try_direct_path(command, env);
 	exec_path = get_execpath(env, command[0]);
 	if (!exec_path)
 	{
@@ -44,7 +61,12 @@ void	first_process(char **av, char **env, int *p_fd)
 {
 	int	fd;
 
-	fd = open(av[1], O_RDONLY);
+	fd = open(av[1], O_RDONLY, 0777);
+	if (fd == -1)
+	{
+		perror("Child process");
+		exit(errno);
+	}
 	close(p_fd[0]);
 	dup2(fd, STDIN_FILENO);
 	dup2(p_fd[1], STDOUT_FILENO);
@@ -55,7 +77,12 @@ void	second_process(char **av, char **env, int *p_fd)
 {
 	int	fd;
 
-	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC);
+	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
+	{
+		perror("Child process");
+		exit(errno);
+	}
 	close(p_fd[1]);
 	dup2(fd, STDOUT_FILENO);
 	dup2(p_fd[0], STDIN_FILENO);
@@ -70,7 +97,7 @@ int	main(int ac, char *av[], char *envp[])
 
 	if (ac < 5)
 	{
-		ft_printf("Error: expected file1 cmd1 cmd2 file2\n");
+		ft_putstr_fd("Error: Expected file1 cmd1 cmd2 file2\n", 2);
 		exit(1);
 	}
 	if (pipe(fd) == -1)
