@@ -6,29 +6,12 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/08 17:40:58 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:54:34 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
-// /usr/bin/argv[1] issue with arguments
-
-
-char	*get_command(char *str)
-{
-	int 	i;
-	char	*command;
-
-	i = 0;
-	while (str[i] && str[i] != ' ')
-		i++;
-	command = ft_calloc(i + 1, sizeof(char));
-	if (!command)
-		return (NULL);
-	ft_strlcpy(command, str, i + 1);
-	return (command);
-}
 
 void	execute(char *av, char **env)
 {
@@ -51,6 +34,7 @@ void	execute(char *av, char **env)
 		return ;
 	}
 }
+
 void	first_process(char **av, char **env, int *p_fd)
 {
 	int	fd;
@@ -89,12 +73,4 @@ int	main(int ac, char *av[], char *envp[])
 	waitpid(pid1, NULL, 0);
 	second_process(av, envp, fd);
 	return (0);
-
 }
-//exec_paths[i]/av[1];
-//
-// while (exec_paths[i])
-// {
-//		ft_printf("%s\n", exec_paths[i]);
-//		i++;
-// }
