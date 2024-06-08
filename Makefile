@@ -6,7 +6,7 @@
 #    By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 12:36:12 by jteissie          #+#    #+#              #
-#    Updated: 2024/06/08 17:52:39 by jteissie         ###   ########.fr        #
+#    Updated: 2024/06/08 17:56:03 by jteissie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,8 @@ OBJ_FILES =	pipex.o \
 
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
+all: $(NAME)
+
 $(OBJ_DIR):
 	mkdir -p obj
 
@@ -49,8 +51,6 @@ $(NAME): $(OBJ)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) $(CCFLAGS) -c $< $(INCLUDE) -o $@
-
-all: $(NAME)
 
 clean:
 	make -C $(LIBFT) clean
