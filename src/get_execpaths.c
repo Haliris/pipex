@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:44:37 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/08 17:41:18 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 18:44:02 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -51,7 +51,7 @@ char	*get_path(char *av, char **env)
 		free(control);
 	}
 	trash(env);
-	return (av);
+	return (NULL);
 }
 
 char	*get_execpath(char **envp, char *av)

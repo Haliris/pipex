@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/08 17:54:34 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 18:38:27 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,23 @@ void	execute(char *av, char **env)
 
 	command = ft_split(av, ' ');
 	if (!command)
-		return ;
+	{
+		perror("Child process error: ");
+		exit (1);
+	}
 	exec_path = get_execpath(env, command[0]);
 	if (!exec_path)
 	{
 		trash(command);
-		return ;
+		perror("Child process error: ");
+		exit (1);
 	}
 	if (execve(exec_path, command, env) == -1)
 	{
 		free(exec_path);
 		trash(command);
-		return ;
+		perror("Child process error: ");
+		exit (-1);
 	}
 }
 
@@ -61,16 +66,26 @@ int	main(int ac, char *av[], char *envp[])
 {
 	int		fd[2];
 	pid_t	pid1;
+	int		pid_status;
 
-	(void)ac;
+	if (ac < 5)
+	{
+		ft_printf("Error: expected file1 cmd1 cmd2 file2\n");
+		exit(1);
+	}
 	if (pipe(fd) == -1)
-		return (1);
+		exit(1);
 	pid1 = fork();
 	if (pid1 < 0)
-		return (2);
+		exit(1);
 	if (pid1 == 0)
 		first_process(av, envp, fd);
-	waitpid(pid1, NULL, 0);
+	waitpid(pid1, &pid_status, 0);
+	if (pid_status)
+	{
+		ft_printf("Child exited with code:%d\n", pid_status);
+		exit(1);
+	}
 	second_process(av, envp, fd);
 	return (0);
 }
