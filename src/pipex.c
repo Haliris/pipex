@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/07 22:39:06 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:40:58 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	main(int ac, char *av[], char *envp[])
 {
 	int		fd[2];
 	pid_t	pid1;
-	pid_t	pid2;
 
+	(void)ac;
 	if (pipe(fd) == -1)
 		return (1);
 	pid1 = fork();

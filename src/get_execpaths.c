@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:44:37 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/07 22:39:07 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/08 17:41:18 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -15,7 +15,6 @@
 void	cat_slash(char **exec_paths)
 {
 	int		i;
-	size_t	len;
 	char	*safety_p;
 
 	i = 0;
