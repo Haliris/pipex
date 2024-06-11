@@ -6,7 +6,7 @@
 #    By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 12:36:12 by jteissie          #+#    #+#              #
-#    Updated: 2024/06/08 18:39:01 by jteissie         ###   ########.fr        #
+#    Updated: 2024/06/11 13:24:08 by jteissie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,24 +18,33 @@ NAME = pipex
 
 LIBFT = libft/
 
-SRC_DIR = src/
 
-INCLUDE = -I include/ \
-		  -I libft/
+INCLUDE = 	-I ./ \
+	       	-I libft/
 
-SRC_FILES = pipex.c \
-			get_execpaths.c \
-			utils.c
+SRC =	pipex.c \
+	get_execpaths.c \
+	utils.c
 
-SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
+SRC_DIR = ./
+
+BONUS_SRC =	pipex_bonus.c \
+		get_execpaths_bonus.c \
+		utils_bonus.c
 
 OBJ_DIR = obj/
 
 OBJ_FILES =	pipex.o \
-			get_execpaths.o \
-			utils.o
+		get_execpaths.o \
+		utils.o
 
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
+
+BONUS_OBJ_FILES = pipex_bonus.o \
+		  get_execpaths_bonus.o \
+		  utils_bonus.o
+
+BONUS_OBJS = $(addprefix $(OBJ_DIR), $(BONUS_OBJ_FILES))
 
 all: $(NAME)
 
@@ -49,8 +58,9 @@ $(NAME): $(OBJ)
 	make -C $(LIBFT) all
 	$(CC) $(CCFLAGS) $(OBJ) -L./$(LIBFT) -lft -o $(NAME)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	$(CC) $(CCFLAGS) -c $< $(INCLUDE) -o $@
+bonus: $(OBJ_DIR) $(BONUS_OBJS)
+	make -C $(LIBFT) all
+	$(CC) $(CCFLAGS) $(BONUS_OBJS) -L./$(LIBFT) -lft -o $(NAME)
 
 clean:
 	make -C $(LIBFT) clean

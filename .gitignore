@@ -3,6 +3,7 @@
 *.swp
 *.gch
 *.out
+*.o
 test*
 test/*
 pipex*
