@@ -6,12 +6,19 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 18:14:25 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/08 20:45:22 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:41:41 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
+
+void	handle_error(char *message, int code)
+{
+	ft_putstr_fd(message, 2);
+	ft_putchar_fd('\n', 2);
+	exit(code);
+}
 
 void	trash(char **array)
 {
