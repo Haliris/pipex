@@ -6,7 +6,7 @@
 #    By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 12:36:12 by jteissie          #+#    #+#              #
-#    Updated: 2024/06/11 13:24:08 by jteissie         ###   ########.fr        #
+#    Updated: 2024/06/11 17:47:33 by jteissie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ INCLUDE = 	-I ./ \
 
 SRC =	pipex.c \
 	get_execpaths.c \
-	utils.c
+	utils.c \
+	error_handler.c
 
 SRC_DIR = ./
 
@@ -36,7 +37,8 @@ OBJ_DIR = obj/
 
 OBJ_FILES =	pipex.o \
 		get_execpaths.o \
-		utils.o
+		utils.o \
+		error_handler.o
 
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
@@ -57,10 +59,6 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
 $(NAME): $(OBJ) 
 	make -C $(LIBFT) all
 	$(CC) $(CCFLAGS) $(OBJ) -L./$(LIBFT) -lft -o $(NAME)
-
-bonus: $(OBJ_DIR) $(BONUS_OBJS)
-	make -C $(LIBFT) all
-	$(CC) $(CCFLAGS) $(BONUS_OBJS) -L./$(LIBFT) -lft -o $(NAME)
 
 clean:
 	make -C $(LIBFT) clean
