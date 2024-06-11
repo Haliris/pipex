@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/11 19:40:47 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:46:23 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	execute(char *av, char **env)
 
 	command = ft_split(av, ' ');
 	if (!command || !command[0])
-		handle_error("Command split error.\n", EXIT_FAILURE);
+		handle_error("Command split error.", EXIT_FAILURE);
 	try_direct_path(command, env);
 	exec_path = get_execpath(env, command[0]);
 	if (!exec_path)
@@ -84,7 +84,7 @@ int	main(int ac, char *av[], char *envp[])
 	int		pid_status;
 
 	if (ac < 5)
-		handle_error("Error: Expected file1 cmd1 cmd2 file2\n", EXIT_FAILURE);
+		handle_error("Error: Expected file1 cmd1 cmd2 file2", EXIT_FAILURE);
 	if (pipe(fd) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
