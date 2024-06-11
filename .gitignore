@@ -6,5 +6,4 @@
 *.o
 test*
 test/*
-pipex*
 pipexMedic/*
