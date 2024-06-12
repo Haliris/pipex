@@ -6,7 +6,7 @@
 #    By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 12:36:12 by jteissie          #+#    #+#              #
-#    Updated: 2024/06/11 19:42:06 by jteissie         ###   ########.fr        #
+#    Updated: 2024/06/12 12:02:09 by jteissie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,6 @@ fclean : clean
 	make -C $(LIBFT) fclean
 	rm -f $(NAME) 
 
-re : fclean all
+re : fclean clean all
 
 .PHONY : all clean fclean re

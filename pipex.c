@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/12 11:50:45 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:30:40 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,17 @@ void	execute(char *av, char **env)
 
 	command = ft_split(av, ' ');
 	if (!command || !command[0])
-		handle_error("Command split error.", EXIT_FAILURE);
+	{
+		if (command)
+			trash(command);
+		handle_error("Command split error", EXIT_FAILURE);
+	}
 	try_direct_path(command, env);
 	exec_path = get_execpath(env, command[0]);
 	if (!exec_path)
 	{
 		trash(command);
-		handle_error(strerror(PATH_ERROR), PATH_ERROR);
+		handle_error("Command not found", PATH_ERROR);
 	}
 	if (execve(exec_path, command, env) == -1)
 	{
@@ -85,6 +89,7 @@ int	main(int ac, char *av[], char *envp[])
 {
 	int		fd[2];
 	pid_t	pid;
+	pid_t	pid2;
 	int		pid_status;
 
 	if (ac < 5)
@@ -92,12 +97,20 @@ int	main(int ac, char *av[], char *envp[])
 	if (pipe(fd) == -1)
 		exit(EXIT_FAILURE);
 	pid = fork();
+	pid2 = fork();
 	if (pid < 0)
-		exit(EXIT_FAILURE);
+		handle_error("Could not fork first child", EXIT_FAILURE);
+	if (pid2 < 0)
+		handle_error("Could not fork second child", EXIT_FAILURE);
 	if (pid == 0)
 		first_process(av, envp, fd);
+	if (pid2 == 0)
+		second_process(av, envp, fd);
+	close(fd[0]);
+	close(fd[1]);
 	waitpid(pid, &pid_status, 0);
+	waitpid(pid2, &pid_status, 0);
 	if (pid_status)
-		handle_error("Child exited early.", EXIT_FAILURE);
-	second_process(av, envp, fd);
+		handle_error("Child exited early", EXIT_FAILURE);
+	return (0);
 }
