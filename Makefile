@@ -6,7 +6,7 @@
 #    By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 12:36:12 by jteissie          #+#    #+#              #
-#    Updated: 2024/06/12 12:02:09 by jteissie         ###   ########.fr        #
+#    Updated: 2024/06/12 18:47:06 by jteissie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ INCLUDE = 	-I ./ \
 SRC =	pipex.c \
 	get_execpaths.c \
 	utils.c \
+	execute_path.c
 
 SRC_DIR = ./
 
@@ -32,6 +33,7 @@ OBJ_DIR = obj/
 OBJ_FILES =	pipex.o \
 		get_execpaths.o \
 		utils.o \
+		execute_path.o
 
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 

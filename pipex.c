@@ -6,54 +6,12 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/12 17:30:40 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:07:10 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "pipex.h"
-
-void	try_direct_path(char **command, char **env)
-{
-	char	*exec_path;
-
-	if (access(command[0], F_OK | X_OK) == 0)
-	{
-		exec_path = command[0];
-		if (execve(exec_path, command, env) == -1)
-		{
-			trash(command);
-			handle_error(strerror(errno), errno);
-		}
-	}
-}
-
-void	execute(char *av, char **env)
-{
-	char	**command;
-	char	*exec_path;
-
-	command = ft_split(av, ' ');
-	if (!command || !command[0])
-	{
-		if (command)
-			trash(command);
-		handle_error("Command split error", EXIT_FAILURE);
-	}
-	try_direct_path(command, env);
-	exec_path = get_execpath(env, command[0]);
-	if (!exec_path)
-	{
-		trash(command);
-		handle_error("Command not found", PATH_ERROR);
-	}
-	if (execve(exec_path, command, env) == -1)
-	{
-		free(exec_path);
-		trash(command);
-		handle_error(strerror(errno), errno);
-	}
-}
 
 void	first_process(char **av, char **env, int *p_fd)
 {
@@ -85,6 +43,16 @@ void	second_process(char **av, char **env, int *p_fd)
 	execute(av[3], env);
 }
 
+void	wait_for_children(int pid, int pid2, int pid_status, int fd[])
+{
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid, &pid_status, 0);
+	waitpid(pid2, &pid_status, 0);
+	if (pid_status)
+		handle_error("Child exited early", EXIT_FAILURE);
+}
+
 int	main(int ac, char *av[], char *envp[])
 {
 	int		fd[2];
@@ -106,11 +74,7 @@ int	main(int ac, char *av[], char *envp[])
 		first_process(av, envp, fd);
 	if (pid2 == 0)
 		second_process(av, envp, fd);
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid, &pid_status, 0);
-	waitpid(pid2, &pid_status, 0);
-	if (pid_status)
-		handle_error("Child exited early", EXIT_FAILURE);
+	pid_status = 0;
+	wait_for_children(pid, pid2, pid_status, fd);
 	return (0);
 }
