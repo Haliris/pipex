@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/11 19:46:23 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/12 11:50:45 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ void	first_process(char **av, char **env, int *p_fd)
 		handle_error(strerror(errno), errno);
 	close(p_fd[0]);
 	dup2(fd, STDIN_FILENO);
+	close(fd);
 	dup2(p_fd[1], STDOUT_FILENO);
+	close(p_fd[1]);
 	execute(av[2], env);
 }
 
@@ -73,7 +75,9 @@ void	second_process(char **av, char **env, int *p_fd)
 		handle_error(strerror(errno), errno);
 	close(p_fd[1]);
 	dup2(fd, STDOUT_FILENO);
+	close(fd);
 	dup2(p_fd[0], STDIN_FILENO);
+	close(p_fd[0]);
 	execute(av[3], env);
 }
 
