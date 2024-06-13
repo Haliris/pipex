@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/13 12:16:50 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/13 17:33:52 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,16 @@ int	main(int ac, char *av[], char *envp[])
 	if (pipe(fd) == -1)
 		exit(EXIT_FAILURE);
 	pid1 = fork();
-	pid2 = fork();
 	if (pid1 < 0)
 		handle_error("Could not fork first child", EXIT_FAILURE);
-	if (pid2 < 0)
-		handle_error("Could not fork second child", EXIT_FAILURE);
 	if (pid1 == 0)
 		first_process(av, envp, fd);
+	pid2 = fork();
+	if (pid2 < 0)
+		handle_error("Could not fork second child", EXIT_FAILURE);
 	if (pid2 == 0)
 		second_process(av, envp, fd);
 	pid_status = 0;
 	wait_for_children(pid1, pid2, pid_status, fd);
-	return (0);
+	return (EXIT_SUCCESS);
 }
