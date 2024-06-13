@@ -11,12 +11,13 @@ sleep3="sleep 3"
 sleep1="sleep 1"
 
 echo "
-/**********************************************************************\
+/**********************************************************************\\
 
   ____ _               _      __  __         ____  _                 
  / ___| |__   ___  ___| | __ |  \/  |_   _  |  _ \(_)_ __   ___  ___ 
 | |   | '_ \ / _ \/ __| |/ / | |\/| | | | | | |_) | | '_ \ / _ \/ __|
-| |___| | | |  __/ (__|   <  | |  | | |_| | |  __/| | |_) |  __/\__ \
+| |___| | | |  __/ (__|   <  | |  | | |_| | |  __/| | |_) |  __/\__ 
+\
  \____|_| |_|\___|\___|_|\_\ |_|  |_|\__, | |_|   |_| .__/ \___||___/
                                      |___/          |_|              
 
@@ -28,7 +29,7 @@ chmod u+x "./sleep_test.sh"
 > $out
 sleep 2
 
-echo "first command: $pipex "$src" cat cat "$out""
+echo "First command: $pipex "$src" cat cat "$out""
 $pipex "$src" cat cat "$out"
 sleep 2
 echo "Output file:"
@@ -37,7 +38,7 @@ cat "$out"
 sleep 2
 
 echo "----"
-echo "second command "$out" ls "$wc_l" "$out""
+echo "Second command "$out" ls "$wc_l" "$out""
 $pipex "$out" ls "$wc_l" "$out"
 sleep 2
 echo "Output file:"
@@ -46,7 +47,7 @@ cat "$out"
 sleep 2
 
 echo "----"
-echo "third command $no_path $pipex "$src" cat cat "$out""
+echo "Third command $no_path $pipex "$src" cat cat "$out""
 sleep 2
 $no_path $pipex "$src" cat cat "$out"
 echo "Output file:"
@@ -55,7 +56,7 @@ cat "$out"
 sleep 2
 
 echo "----"
-echo "fourth command $no_path $pipex "$src" /usr/bin/cat /usr/bin/cat "$out""
+echo "Fourth command $no_path $pipex "$src" /usr/bin/cat /usr/bin/cat "$out""
 sleep 2
 $no_path $pipex "$src" "/usr/bin/cat" "/usr/bin/cat" "$out"
 echo "Output file:"
@@ -65,7 +66,7 @@ cat "$out"
 sleep 2
 
 echo "----"
-echo "fifth command $pipex "$src" ls nothing "$out""
+echo "Fifth command $pipex "$src" ls nothing "$out""
 $pipex "$src" ls "nothing" "$out"
 sleep 2
 echo "Output file:"
@@ -74,7 +75,7 @@ cat "$out"
 sleep 2
 
 echo "----"
-echo "sixth command $pipex "$src" nothing ls "$out""
+echo "Sixth command $pipex "$src" nothing ls "$out""
 $pipex "$src" "nothing" ls "$out"
 sleep 2
 echo "Output file:"
@@ -83,12 +84,12 @@ cat "$out"
 sleep 2
 
 echo "----"
-echo "second command "$src" ls "$wc_l" "$forbidden""
+echo "Second file forbidden :"$src" ls "$wc_l" "$forbidden""
 $pipex "$src" ls "$wc_l" "$forbidden"
 sleep 2
 
 echo "----"
-echo "second command "$forbidden" ls "$wc_l" "$out""
+echo "First file forbidden :"$forbidden" ls "$wc_l" "$out""
 $pipex "$forbidden" ls "$wc_l" "$out"
 echo "Output file:"
 sleep 1
@@ -96,7 +97,23 @@ cat "$out"
 sleep 2
 
 echo "----"
-echo "zombie sleep test:"
+echo "First cmd empty :"$src" "\"\"" "$wc_l" "$out""
+$pipex "$src" "" "$wc_l" "$out"
+echo "Output file:"
+sleep 1
+cat "$out"
+sleep 2
+
+echo "----"
+echo "Second cmd empty :"$src" "$wc_l" "\"\"" "$out""
+$pipex "$src"  ls "" "$out"
+echo "Output file:"
+sleep 1
+cat "$out"
+sleep 2
+
+echo "----"
+echo "Zombie sleep test:"
 time $pipex "$src" "$sleep3" "$sleep1" "$out"
 sleep 1
 time "./sleep_test.sh"
