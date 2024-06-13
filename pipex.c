@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/13 17:33:52 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/13 18:14:08 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	wait_for_children(int pid1, int pid2, int pid_status, int fd[])
 	waitpid(pid1, &pid_status, 0);
 	waitpid(pid2, &pid_status, 0);
 	if (pid_status)
-		handle_error("Child exited early", EXIT_FAILURE);
+		handle_error("Second child exited early", EXIT_FAILURE);
 }
 
 int	main(int ac, char *av[], char *envp[])
