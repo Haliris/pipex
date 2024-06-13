@@ -6,7 +6,7 @@
 /*   By: jteissie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 18:44:43 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/12 18:46:00 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/13 11:29:55 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	try_absolute_path(char **command, char **env)
 	}
 }
 
-void	execute(char *av, char **env)
+int	execute(char *av, char **env)
 {
 	char	**command;
 	char	*exec_path;
@@ -53,4 +53,5 @@ void	execute(char *av, char **env)
 		trash(command);
 		handle_error(strerror(errno), errno);
 	}
+	return (errno);
 }
