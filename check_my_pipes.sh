@@ -1,7 +1,7 @@
 #!/bin/bash
 pipex="./pipex"
 start="Hello World"
-src="./pipex.c"
+src="./src/pipex.c"
 makefile="./Makefile"
 out="test/test_out.txt"
 no_path="env -i"
