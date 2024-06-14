@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/13 18:14:08 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/14 10:57:52 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 void	first_process(char **av, char **env, int *p_fd)
 {
 	int	fd;
-	int	error;
 
 	fd = open(av[1], O_RDONLY, 0777);
 	if (fd == -1)
@@ -31,19 +30,12 @@ void	first_process(char **av, char **env, int *p_fd)
 	dup2(p_fd[1], STDOUT_FILENO);
 	close(p_fd[1]);
 	execute(av[2], env);
-	error = execute(av[2], env);
-	if (error)
-	{
-		close(STDOUT_FILENO);
-		close(STDIN_FILENO);
-	}
-	handle_error(strerror(error), error);
+	execute(av[2], env);
 }
 
 void	second_process(char **av, char **env, int *p_fd)
 {
 	int	fd;
-	int	error;
 
 	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
@@ -57,13 +49,7 @@ void	second_process(char **av, char **env, int *p_fd)
 	close(fd);
 	dup2(p_fd[0], STDIN_FILENO);
 	close(p_fd[0]);
-	error = execute(av[3], env);
-	if (error)
-	{
-		close(STDOUT_FILENO);
-		close(STDIN_FILENO);
-	}
-	handle_error(strerror(error), error);
+	execute(av[3], env);
 }
 
 void	wait_for_children(int pid1, int pid2, int pid_status, int fd[])

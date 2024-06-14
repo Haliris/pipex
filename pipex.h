@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:53:36 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/13 11:34:38 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/14 10:58:31 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -28,5 +28,5 @@ void	copy_and_cat(char *out, char *cpy_src, char *cat_src);
 char	*get_path(char *av, char **env);
 void	handle_error(char *message, int code);
 void	try_absolute_path(char **command, char **env);
-int		execute(char *av, char **env);
+void	execute(char *av, char **env);
 #endif
