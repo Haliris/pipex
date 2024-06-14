@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/14 17:48:29 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/14 19:46:42 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -19,7 +19,7 @@ void	marry_and_reproduce(char *cmd, char **env)
 
 	if (pipe(p_fd) == -1)
 		handle_error("Could not open pipe for middle child", EXIT_FAILURE);
-	pid_child =fork();
+	pid_child = fork();
 	if (pid_child < 0)
 		handle_error("Could not fork middle child", EXIT_FAILURE);
 	if (pid_child == 0)
@@ -47,11 +47,11 @@ int	open_infile(char *av)
 	return (fd);
 }
 
-int open_outfile(char *av)
+int	open_outfile(char *av)
 {
-	int fd;
+	int	fd;
 
-	fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	fd = open(av, O_WRONLY | O_APPEND | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		handle_error(strerror(errno), errno);
 	return (fd);
