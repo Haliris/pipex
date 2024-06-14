@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/14 19:46:42 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/14 19:58:07 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -73,11 +73,11 @@ int	main(int ac, char *av[], char *envp[])
 	close(fd_out);
 	marry_and_reproduce(av[2], envp);
 	index = 3;
-	while (ac - index > 3)
+	while (index < ac - 2)
 	{
 		marry_and_reproduce(av[index], envp);
 		index++;
 	}
-	execute(av[index + 1], envp);
+	execute(av[ac - 2], envp);
 	return (EXIT_SUCCESS);
 }
