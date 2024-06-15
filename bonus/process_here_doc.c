@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:09:14 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/15 17:38:15 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/15 20:46:26 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "pipex_bonus.h"
 #include "get_next_line.h"
 
-void	put_line(char *limiter,	int *p_fd)
+void	put_line(char *limiter)
 {
 	char	*gnl_line;
 	int		len;
@@ -30,7 +30,7 @@ void	put_line(char *limiter,	int *p_fd)
 		}
 		if (!gnl_line)
 			handle_error("Couldn't find LIMITER in here_doc", EXIT_FAILURE);
-		ft_putstr_fd(gnl_line, p_fd[1]);
+		ft_putstr_fd(gnl_line, STDOUT_FILENO);
 		free(gnl_line);
 	}
 }
@@ -41,24 +41,25 @@ void	process_here_doc(char *limiter)
 	pid_t	pid_child;
 	int		status;
 
-	pid_child = fork();
 	if (pipe(p_fd) == -1)
 		handle_error("Could not open pipe for here_doc child", errno);
+	pid_child = fork();
 	if (pid_child < -1)
 		handle_error("Could not fork here_doc child", errno);
 	if (pid_child == 0)
 	{
+		close(p_fd[0]);
 		dup2(p_fd[1], STDOUT_FILENO);
 		close(p_fd[1]);
-		close(p_fd[0]);
-		put_line(limiter, p_fd);
+		put_line(limiter);
 	}
 	else
 	{
+		close(p_fd[1]);
 		dup2(p_fd[0], STDIN_FILENO);
 		close(p_fd[0]);
-		wait(&status);
-		if (WIFEXITED(status))
-			handle_error("here_doc child exited early", status);
+		waitpid(pid_child, &status, 0);
+		if (status)
+			handle_error("Child exited early", EXIT_FAILURE);
 	}
 }
