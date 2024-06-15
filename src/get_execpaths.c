@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:44:37 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/11 19:42:42 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/15 17:19:12 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -22,7 +22,7 @@ void	cat_slash(char **exec_paths)
 		return ;
 	while (exec_paths[i])
 	{
-		safety_p = ft_str_rejoin(exec_paths[i], "/");
+		safety_p = ft_str_realloc_join(exec_paths[i], "/");
 		if (!safety_p)
 		{
 			trash(exec_paths);

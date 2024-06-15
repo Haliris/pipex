@@ -6,13 +6,27 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/14 19:58:07 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/15 18:55:40 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 #include "pipex_bonus.h"
 
-void	marry_and_reproduce(char *cmd, char **env)
+void	redirect(int *p_fd, int *file_fd, int mode)
+{
+	close(p_fd[0]);
+	if (mode)
+	{
+		dup2(file_fd[1], STDOUT_FILENO);
+	}
+	else
+		dup2(p_fd[1], STDOUT_FILENO);
+	close(p_fd[1]);
+	close(file_fd[1]);
+	close(file_fd[0]);
+}
+
+void	marry_and_reproduce(char *cmd, char **env, int *fd, int mode)
 {
 	int	pid_child;
 	int	p_fd[2];
@@ -24,9 +38,7 @@ void	marry_and_reproduce(char *cmd, char **env)
 		handle_error("Could not fork middle child", EXIT_FAILURE);
 	if (pid_child == 0)
 	{
-		close(p_fd[0]);
-		dup2(p_fd[1], STDOUT_FILENO);
-		close(p_fd[1]);
+		redirect(p_fd, fd, mode);
 		execute(cmd, env);
 	}
 	else
@@ -51,33 +63,51 @@ int	open_outfile(char *av)
 {
 	int	fd;
 
-	fd = open(av, O_WRONLY | O_APPEND | O_CREAT | O_TRUNC, 0777);
+	fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		handle_error(strerror(errno), errno);
 	return (fd);
 }
 
+void	wait_for_children(int index, int *p_fd)
+{
+	int	status;
+
+	close(p_fd[0]);
+	close(p_fd[1]);
+	while (index >= 2)
+	{
+		wait(&status);
+		if (status)
+			perror("Child exit status");
+		index--;
+	}
+}
+
 int	main(int ac, char *av[], char *envp[])
 {
 	int		index;
-	int		fd_in;
-	int		fd_out;
+	int		fd_file[2];
 
 	if (ac < 5)
 		handle_error("Expected at least file1 cmd1 cmd2 file2", EXIT_FAILURE);
-	fd_in = open_infile(av[1]);
-	dup2(fd_in, STDIN_FILENO);
-	close(fd_in);
-	fd_out = open_outfile(av[ac - 1]);
-	dup2(fd_out, STDOUT_FILENO);
-	close(fd_out);
-	marry_and_reproduce(av[2], envp);
-	index = 3;
-	while (index < ac - 2)
+	index = 2;
+	if (ft_strncmp(av[1], "here_doc", 8) == 0)
 	{
-		marry_and_reproduce(av[index], envp);
+		process_here_doc(av[2]);
 		index++;
 	}
-	execute(av[ac - 2], envp);
+	else
+	{
+		fd_file[0] = open_infile(av[1]);
+		dup2(fd_file[0], STDIN_FILENO);
+	}
+	fd_file[1] = open_outfile(av[ac - 1]);
+	dup2(fd_file[1], STDOUT_FILENO);
+	marry_and_reproduce(av[index++], envp, fd_file, 0);
+	while (index < ac - 2)
+		marry_and_reproduce(av[index++], envp, fd_file, 0);
+	marry_and_reproduce(av[ac - 2], envp, fd_file, 1);
+	wait_for_children(index, fd_file);
 	return (EXIT_SUCCESS);
 }
