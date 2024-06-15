@@ -7,7 +7,7 @@ out="test/test_out.txt"
 no_path="env -i"
 wc_l="wc -l"
 forbidden="test/test_forbidden.txt"
-sleep3="sleep 3"
+sleep5="sleep 5"
 sleep1="sleep 1"
 
 echo "
@@ -24,7 +24,7 @@ echo "
 \**********************************************************************/
 "
 echo "#!/bin/bash" > "./sleep_test.sh"
-echo "sleep 3 | sleep 1" >> "./sleep_test.sh"
+echo "sleep 5 | sleep 1" >> "./sleep_test.sh"
 chmod u+x "./sleep_test.sh"
 > $out
 sleep 2
@@ -114,7 +114,7 @@ sleep 2
 
 echo "----"
 echo "Zombie sleep test:"
-time $pipex "$src" "$sleep3" "$sleep1" "$out"
+time $pipex "$src" "$sleep5" "$sleep1" "$out"
 sleep 1
 time "./sleep_test.sh"
 sleep 2
