@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:53:36 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/15 17:25:18 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/15 21:55:54 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_BONUS_H
@@ -19,6 +19,9 @@
 # include <string.h>
 # define PATH_ERROR 127
 # define EXIT_FAILURE 1
+# define APPEND_TRUE 1
+# define APPEND_FALSE 0
+# define LAST_FILE 1
 
 char	*get_execpath(char **envp, char *av);
 void	cat_slash(char **envp);
@@ -30,4 +33,6 @@ void	handle_error(char *message, int code);
 void	try_absolute_path(char **command, char **env);
 void	execute(char *av, char **env);
 void	process_here_doc(char *limiter);
+int	open_infile(char *av);
+int	open_outfile(char *av, int append);
 #endif

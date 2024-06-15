@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/15 20:46:33 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/15 21:56:31 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -49,26 +49,6 @@ void	marry_and_reproduce(char *cmd, char **env, int *fd, int mode)
 	}
 }
 
-int	open_infile(char *av)
-{
-	int	fd;
-
-	fd = open(av, O_RDONLY, 0777);
-	if (fd == -1)
-		handle_error(strerror(errno), errno);
-	return (fd);
-}
-
-int	open_outfile(char *av)
-{
-	int	fd;
-
-	fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd == -1)
-		handle_error(strerror(errno), errno);
-	return (fd);
-}
-
 void	wait_for_children(int index, int *p_fd)
 {
 	int	status;
@@ -94,20 +74,21 @@ int	main(int ac, char *av[], char *envp[])
 	index = 2;
 	if (ft_strncmp(av[1], "here_doc", 8) == 0)
 	{
-		process_here_doc(av[2]);
-		index++;
+		process_here_doc(av[index++]);
+		fd_file[1] = open_outfile(av[ac - 1], APPEND_TRUE);
+		fd_file[0] = open_outfile(av[ac - 1], APPEND_TRUE);
 	}
 	else
 	{
+		fd_file[1] = open_outfile(av[ac - 1], APPEND_FALSE);
 		fd_file[0] = open_infile(av[1]);
 		dup2(fd_file[0], STDIN_FILENO);
 	}
-	fd_file[1] = open_outfile(av[ac - 1]);
 	dup2(fd_file[1], STDOUT_FILENO);
 	marry_and_reproduce(av[index++], envp, fd_file, 0);
 	while (index < ac - 2)
 		marry_and_reproduce(av[index++], envp, fd_file, 0);
-	marry_and_reproduce(av[ac - 2], envp, fd_file, 1);
+	marry_and_reproduce(av[ac - 2], envp, fd_file, LAST_FILE);
 	wait_for_children(index, fd_file);
 	return (EXIT_SUCCESS);
 }
