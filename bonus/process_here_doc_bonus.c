@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:09:14 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/16 12:16:26 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/16 12:29:21 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,13 @@
 void	put_line(char *limiter)
 {
 	char	*gnl_line;
-	int		lim_len;
-	int		gnl_len;
+	int		len;
 
-	lim_len = ft_strlen(limiter);
+	len = ft_strlen(limiter);
 	while (1)
 	{
 		gnl_line = get_next_line(STDIN_FILENO);
-		gnl_len = ft_strlen(gnl_line);
-		if (ft_strncmp(gnl_line, limiter, lim_len) == 0 && lim_len == gnl_len)
+		if (ft_strncmp(gnl_line, limiter, len) == 0 && gnl_line[len] == '\n')
 		{
 			free(gnl_line);
 			exit(EXIT_SUCCESS);
