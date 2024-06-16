@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:53:36 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/15 21:55:54 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/16 12:16:56 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_BONUS_H
@@ -33,6 +33,6 @@ void	handle_error(char *message, int code);
 void	try_absolute_path(char **command, char **env);
 void	execute(char *av, char **env);
 void	process_here_doc(char *limiter);
-int	open_infile(char *av);
-int	open_outfile(char *av, int append);
+int		open_infile(char *av);
+int		open_outfile(char *av, int append);
 #endif

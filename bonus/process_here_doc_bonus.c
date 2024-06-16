@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_here_doc.c                                 :+:      :+:    :+:   */
+/*   process_here_doc_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:09:14 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/15 21:25:31 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/16 12:16:26 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@
 void	put_line(char *limiter)
 {
 	char	*gnl_line;
-	int		len;
+	int		lim_len;
+	int		gnl_len;
 
-	len = ft_strlen(limiter);
+	lim_len = ft_strlen(limiter);
 	while (1)
 	{
 		gnl_line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(gnl_line, limiter, len) == 0 && gnl_line[len] == '\n')
+		gnl_len = ft_strlen(gnl_line);
+		if (ft_strncmp(gnl_line, limiter, lim_len) == 0 && lim_len == gnl_len)
 		{
 			free(gnl_line);
 			exit(EXIT_SUCCESS);
@@ -60,6 +62,6 @@ void	process_here_doc(char *limiter)
 		close(p_fd[0]);
 		waitpid(pid_child, &status, 0);
 		if (status)
-			handle_error("Child exited early", EXIT_FAILURE);
+			handle_error("Here_doc child exited early", EXIT_FAILURE);
 	}
 }

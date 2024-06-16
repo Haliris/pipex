@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/15 21:56:31 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/16 12:16:58 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -59,7 +59,7 @@ void	wait_for_children(int index, int *p_fd)
 	{
 		wait(&status);
 		if (status)
-			perror("Child exit status");
+			handle_error("Child exited early", EXIT_FAILURE);
 		index--;
 	}
 }
