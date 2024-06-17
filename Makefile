@@ -6,7 +6,7 @@
 #    By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 12:36:12 by jteissie          #+#    #+#              #
-#    Updated: 2024/06/15 22:11:55 by jteissie         ###   ########.fr        #
+#    Updated: 2024/06/17 09:15:47 by jteissie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,7 @@ clean:
 	rm -rf $(OBJ_DIR)
 
 fclean : clean
-	make -C $(LIBFT) fclean
+	rm -f $(LIBFT)libft.a
 	rm -f $(NAME) 
 
 re : fclean clean all

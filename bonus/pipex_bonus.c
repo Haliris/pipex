@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/16 12:48:05 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/17 09:03:16 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -52,14 +52,22 @@ void	marry_and_reproduce(char *cmd, char **env, int *fd, int mode)
 void	wait_for_children(int index, int *p_fd)
 {
 	int	status;
+	int	error_code;
 
 	close(p_fd[0]);
 	close(p_fd[1]);
 	while (index >= 2)
 	{
 		wait(&status);
-		if (status)
-			handle_error("Child exited early", EXIT_FAILURE);
+		if (WEXITSTATUS(status) != 0)
+		{
+			error_code = WEXITSTATUS(status);
+			ft_putstr_fd("Child exited early with error code: ", STDERR_FILENO);
+			ft_putnbr_fd(error_code, STDERR_FILENO);
+			ft_putchar_fd('\n', STDERR_FILENO);
+			ft_putstr_fd(strerror(error_code), STDERR_FILENO);
+			ft_putchar_fd('\n', STDERR_FILENO);
+		}
 		index--;
 	}
 }
