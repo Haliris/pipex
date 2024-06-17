@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/16 12:53:22 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:28:53 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,28 @@ void	second_process(char **av, char **env, int *p_fd)
 void	wait_for_children(int pid1, int pid2, int fd[])
 {
 	int		pid_status;
+	int		pid_status2;
+	int		error_code;
 
+	error_code = 0;
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid1, &pid_status, 0);
-	waitpid(pid2, &pid_status, 0);
-	if (pid_status)
-		handle_error("Second child exited early", WEXITSTATUS(pid_status));
+	if (WIFEXITED(pid_status))
+	{
+		error_code = WEXITSTATUS(pid_status);
+		if (error_code)
+			handle_child_error("First child exited early code ", error_code);
+	}
+	waitpid(pid2, &pid_status2, 0);
+	if (WIFEXITED(pid_status2))
+	{
+		error_code = WEXITSTATUS(pid_status2);
+		if (error_code)
+			handle_child_error("Second child exited early code ", error_code);
+	}
+	if (error_code)
+		exit(EXIT_FAILURE);
 }
 
 int	main(int ac, char *av[], char *envp[])
@@ -72,15 +87,15 @@ int	main(int ac, char *av[], char *envp[])
 	if (ac != 5)
 		handle_error("Error: Expected file1 cmd1 cmd2 file2", EXIT_FAILURE);
 	if (pipe(fd) == -1)
-		exit(EXIT_FAILURE);
+		handle_error("Could not open pipe", errno);
 	pid1 = fork();
 	if (pid1 < 0)
-		handle_error("Could not fork first child", EXIT_FAILURE);
+		handle_error("Could not fork first child", errno);
 	if (pid1 == 0)
 		first_process(av, envp, fd);
 	pid2 = fork();
 	if (pid2 < 0)
-		handle_error("Could not fork second child", EXIT_FAILURE);
+		handle_error("Could not fork second child", errno);
 	if (pid2 == 0)
 		second_process(av, envp, fd);
 	wait_for_children(pid1, pid2, fd);

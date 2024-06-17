@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 18:14:25 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/15 17:14:59 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:20:04 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ void	handle_error(char *message, int code)
 	ft_putstr_fd(message, 2);
 	ft_putchar_fd('\n', 2);
 	exit(code);
+}
+
+void	handle_child_error(char *message, int error_code)
+{
+	ft_putstr_fd(message, STDERR_FILENO);
+	ft_putnbr_fd(error_code, STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
 }
 
 void	trash(char **array)

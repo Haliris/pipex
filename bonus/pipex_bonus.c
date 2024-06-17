@@ -6,7 +6,7 @@
 /*   By: jteissie <jteissie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 14:19:59 by jteissie          #+#    #+#             */
-/*   Updated: 2024/06/17 09:03:16 by jteissie         ###   ########.fr       */
+/*   Updated: 2024/06/17 10:51:39 by jteissie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -77,10 +77,10 @@ int	main(int ac, char *av[], char *envp[])
 	int		index;
 	int		fd_file[2];
 
-	if (ac < 5 || (ac == 5 && ft_strncmp(av[1], "here_doc", 8) == 0))
+	if (ac < 5 || (ac == 5 && ft_strncmp(av[1], "here_doc", 9) == 0))
 		handle_error("Expected at least file1 cmd1 cmd2 file2", EXIT_FAILURE);
 	index = 2;
-	if (ft_strncmp(av[1], "here_doc", 8) == 0)
+	if (ft_strncmp(av[1], "here_doc", 9) == 0)
 	{
 		process_here_doc(av[index++]);
 		fd_file[1] = open_outfile(av[ac - 1], APPEND_TRUE);
