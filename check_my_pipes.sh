@@ -1,28 +1,20 @@
 #!/bin/bash
 pipex="./pipex"
-start="Hello World"
 src="./src/pipex.c"
+testdir="check_my_pipes"
 makefile="./Makefile"
-out="test/test_out.txt"
+out="check_my_pipes/test_out.txt"
+
 no_path="env -i"
 wc_l="wc -l"
-forbidden="test/test_forbidden.txt"
+forbidden="check_my_pipes/test_forbidden.txt"
 sleep5="sleep 5"
 sleep1="sleep 1"
 
-echo "
-/**********************************************************************\\
-
-  ____ _               _      __  __         ____  _                 
- / ___| |__   ___  ___| | __ |  \/  |_   _  |  _ \(_)_ __   ___  ___ 
-| |   | '_ \ / _ \/ __| |/ / | |\/| | | | | | |_) | | '_ \ / _ \/ __|
-| |___| | | |  __/ (__|   <  | |  | | |_| | |  __/| | |_) |  __/\__ 
-\
- \____|_| |_|\___|\___|_|\_\ |_|  |_|\__, | |_|   |_| .__/ \___||___/
-                                     |___/          |_|              
-
-\**********************************************************************/
-"
+mkdir -p $testdir
+touch $out
+touch $forbidden
+chmod 000 $forbidden
 echo "#!/bin/bash" > "./sleep_test.sh"
 echo "sleep 5 | sleep 1" >> "./sleep_test.sh"
 chmod u+x "./sleep_test.sh"
@@ -114,8 +106,10 @@ sleep 2
 
 echo "----"
 echo "Zombie sleep test:"
+echo "Candidate:"
 time $pipex "$src" "$sleep5" "$sleep1" "$out"
 sleep 1
+echo "Bash:"
 time "./sleep_test.sh"
 sleep 2
 
